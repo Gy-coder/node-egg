@@ -9,7 +9,10 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1656680424801_8920";
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ["httpLog"];
+  config.httpLog = {
+    type: "fuck",
+  };
   config.security = {
     csrf: {
       enable: false,
@@ -33,6 +36,24 @@ export default (appInfo: EggAppInfo) => {
   config.session = {
     key: "MUKE_SESS",
     maxAge: 1000 * 50,
+  };
+  config.mysql = {
+    client: {
+      // host
+      host: "127.0.0.1",
+      // 端口号
+      port: "3306",
+      // 用户名
+      user: "root",
+      // 密码
+      password: "",
+      // 数据库名
+      database: "egg",
+    },
+    // 是否加载到 app 上，默认开启
+    app: true,
+    // 是否加载到 agent 上，默认关闭
+    agent: false,
   };
 
   // add your special config in here

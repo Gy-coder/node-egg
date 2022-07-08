@@ -12,6 +12,7 @@ export default (app: Application) => {
   router.del("/user/delete", controller.user.del);
   router.post("/user/login", controller.user.login);
   router.post("/user/logout", controller.user.logout);
+  router.post("/user/edit", controller.user.edit);
 };
 
 // /user/:id

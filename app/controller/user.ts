@@ -38,12 +38,14 @@ export default class HomeController extends Controller {
   }
   public async lists() {
     const { ctx } = this;
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2000);
-    });
-    ctx.body = [{ id: "123" }];
+    // await new Promise<void>((resolve) => {
+    //   setTimeout(() => {
+    //     resolve();
+    //   }, 2000);
+    // });
+    const res = await ctx.service.user.lists();
+
+    ctx.body = res;
   }
   public async demo() {
     const { ctx } = this;
@@ -52,27 +54,37 @@ export default class HomeController extends Controller {
     console.log("res:", res);
     ctx.body = ctx.query.id;
   }
-  public demo2() {
+  public async demo2() {
     const { ctx } = this;
-    console.log("ctx:params", ctx.params);
-    ctx.body = ctx.params;
+    const res = await ctx.service.user.detail(ctx.params.id);
+    ctx.body = res;
   }
-  public add() {
+  public async add() {
     const { ctx } = this;
     const rule = {
       name: { type: "string" },
       age: { type: "number" },
     };
     ctx.validate(rule);
-    console.log("ctx.request.body", ctx.request.body);
+    // console.log("ctx.request.body", ctx.request.body);
+    const res = await ctx.service.user.add(ctx.request.body);
     ctx.body = {
       status: 200,
-      data: ctx.request.body,
+      data: res,
     };
   }
-  public async del() {
+  public async edit() {
     const { ctx } = this;
-    console.log("delete", ctx.request.body);
-    ctx.body = ctx.request.body;
+    const res = await ctx.service.user.edit(ctx.request.body);
+    ctx.body = {
+      status: 200,
+      data: res,
+    };
+  }
+  public async del(id) {
+    const { ctx } = this;
+    // @ts-ignore
+    const res = await ctx.service.user.delete(ctx.request.body.id);
+    ctx.body = ctx.request.body.id;
   }
 }
