@@ -43,16 +43,18 @@ export default class HomeController extends Controller {
     //     resolve();
     //   }, 2000);
     // });
-    const res = await ctx.service.user.lists();
+    // const res = await ctx.service.user.lists();
 
+    const res = await ctx.model.User.findAll();
     ctx.body = res;
   }
   public async demo() {
     const { ctx } = this;
-    const res = await ctx.service.user.demo(100);
-    console.log("ctx:query", ctx.query);
-    console.log("res:", res);
-    ctx.body = ctx.query.id;
+    // const res = await ctx.service.user.demo(100);
+    // console.log("ctx:query", ctx.query);
+    // console.log("res:", res);
+    const res = await ctx.model.User.findByPk(ctx.query.id);
+    ctx.body = res;
   }
   public async demo2() {
     const { ctx } = this;
@@ -67,7 +69,8 @@ export default class HomeController extends Controller {
     };
     ctx.validate(rule);
     // console.log("ctx.request.body", ctx.request.body);
-    const res = await ctx.service.user.add(ctx.request.body);
+    // const res = await ctx.service.user.add(ctx.request.body);
+    const res = await ctx.model.User.create(ctx.request.body);
     ctx.body = {
       status: 200,
       data: res,
@@ -75,7 +78,16 @@ export default class HomeController extends Controller {
   }
   public async edit() {
     const { ctx } = this;
-    const res = await ctx.service.user.edit(ctx.request.body);
+    // const res = await ctx.service.user.edit(ctx.request.body);
+    const user = await ctx.model.User.findByPk(ctx.request.body.id);
+    if (!user) {
+      ctx.body = {
+        status: 404,
+        errMsg: "ID is not exist",
+      };
+      return;
+    }
+    const res = user.update(ctx.request.body);
     ctx.body = {
       status: 200,
       data: res,
@@ -84,7 +96,19 @@ export default class HomeController extends Controller {
   public async del(id) {
     const { ctx } = this;
     // @ts-ignore
-    const res = await ctx.service.user.delete(ctx.request.body.id);
-    ctx.body = ctx.request.body.id;
+    // const res = await ctx.service.user.delete(ctx.request.body.id);
+    const user = await ctx.model.User.findByPk(ctx.request.body.id);
+    if (!user) {
+      ctx.body = {
+        status: 404,
+        errMsg: "ID is not exist",
+      };
+      return;
+    }
+    const res = user.destroy(ctx.request.body.id);
+    ctx.body = {
+      status: 200,
+      data: res,
+    };
   }
 }

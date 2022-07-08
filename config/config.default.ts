@@ -55,7 +55,18 @@ export default (appInfo: EggAppInfo) => {
     // 是否加载到 agent 上，默认关闭
     agent: false,
   };
-
+  config.sequelize = {
+    dialect: "mysql", // support: mysql, mariadb, postgres, mssql
+    database: "egg",
+    host: "localhost",
+    port: 3306,
+    username: "root",
+    password: "",
+    define: {
+      freezeTableName: false,
+      timestamps: false,
+    },
+  };
   // add your special config in here
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,

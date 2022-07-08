@@ -17,6 +17,7 @@ import 'egg-view';
 import 'egg-validate';
 import 'egg-view-ejs';
 import 'egg-mysql';
+import 'egg-sequelize';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
   interface EggPlugin {
@@ -35,5 +36,6 @@ declare module 'egg' {
     validate?: EggPluginItem;
     ejs?: EggPluginItem;
     mysql?: EggPluginItem;
+    sequelize?: EggPluginItem;
   }
 }
